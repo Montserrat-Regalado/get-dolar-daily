@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksService } from './services/task.service';
+import { VenomService } from './services/venom/venom.service';
 
 @Module({
   imports: [
@@ -14,10 +15,13 @@ import { TasksService } from './services/task.service';
     ScheduleModule.forRoot(),
   ],
   controllers: [],
-  providers: [GetCurrencyDataService, TasksService],
+  providers: [GetCurrencyDataService, TasksService, VenomService],
 })
 export class AppModule {
-  constructor(private _taskService: TasksService) {
-    _taskService.handleCron();
+  constructor(
+    private _taskService: TasksService,
+    private _venomService: VenomService,
+  ) {
+    this._venomService.CreateSession();
   }
 }
